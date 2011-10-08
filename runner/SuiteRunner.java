@@ -2,9 +2,6 @@ import gildedrose.console.HotelConsoleTest;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.Map;
 
 import net.sourceforge.pmd.PMD;
 import net.sourceforge.pmd.PMDException;
@@ -14,30 +11,134 @@ import net.sourceforge.pmd.RuleSet;
 import net.sourceforge.pmd.RuleSets;
 import net.sourceforge.pmd.SourceType;
 import net.sourceforge.pmd.ast.ParseException;
-import net.sourceforge.pmd.rules.*;
-import net.sourceforge.pmd.rules.basic.*;
-import net.sourceforge.pmd.rules.design.*;
-import net.sourceforge.pmd.rules.imports.*;
-import net.sourceforge.pmd.rules.junit.*;
+import net.sourceforge.pmd.rules.AccessorClassGeneration;
+import net.sourceforge.pmd.rules.AssignmentInOperand;
+import net.sourceforge.pmd.rules.AvoidCallingFinalize;
+import net.sourceforge.pmd.rules.AvoidDeeplyNestedIfStmtsRule;
+import net.sourceforge.pmd.rules.AvoidFieldNameMatchingMethodName;
+import net.sourceforge.pmd.rules.AvoidFieldNameMatchingTypeName;
+import net.sourceforge.pmd.rules.AvoidNonConstructorMethodsWithClassName;
+import net.sourceforge.pmd.rules.AvoidReassigningParameters;
+import net.sourceforge.pmd.rules.ClassNamingConventions;
+import net.sourceforge.pmd.rules.CloseResource;
+import net.sourceforge.pmd.rules.ConstructorCallsOverridableMethod;
+import net.sourceforge.pmd.rules.CouplingBetweenObjects;
+import net.sourceforge.pmd.rules.DoubleCheckedLocking;
+import net.sourceforge.pmd.rules.ExcessiveImports;
+import net.sourceforge.pmd.rules.ExcessivePublicCount;
+import net.sourceforge.pmd.rules.IdempotentOperations;
+import net.sourceforge.pmd.rules.MethodNamingConventions;
+import net.sourceforge.pmd.rules.MethodWithSameNameAsEnclosingClass;
+import net.sourceforge.pmd.rules.MoreThanOneLogger;
+import net.sourceforge.pmd.rules.OverrideBothEqualsAndHashcode;
+import net.sourceforge.pmd.rules.SimplifyBooleanReturns;
+import net.sourceforge.pmd.rules.StringConcatenationRule;
+import net.sourceforge.pmd.rules.SuspiciousOctalEscape;
+import net.sourceforge.pmd.rules.SymbolTableTestRule;
+import net.sourceforge.pmd.rules.UnnecessaryConversionTemporary;
+import net.sourceforge.pmd.rules.UnusedFormalParameterRule;
+import net.sourceforge.pmd.rules.UnusedLocalVariableRule;
+import net.sourceforge.pmd.rules.UnusedModifier;
+import net.sourceforge.pmd.rules.UnusedPrivateFieldRule;
+import net.sourceforge.pmd.rules.UnusedPrivateMethodRule;
+import net.sourceforge.pmd.rules.UselessOperationOnImmutable;
+import net.sourceforge.pmd.rules.UselessOverridingMethod;
+import net.sourceforge.pmd.rules.VariableNamingConventions;
+import net.sourceforge.pmd.rules.basic.AvoidMultipleUnaryOperators;
+import net.sourceforge.pmd.rules.basic.AvoidUsingHardCodedIP;
+import net.sourceforge.pmd.rules.basic.AvoidUsingOctalValues;
+import net.sourceforge.pmd.rules.basic.BigIntegerInstantiation;
+import net.sourceforge.pmd.rules.basic.BooleanInstantiation;
+import net.sourceforge.pmd.rules.basic.BrokenNullCheck;
+import net.sourceforge.pmd.rules.basic.UnnecessaryReturn;
+import net.sourceforge.pmd.rules.design.AssignmentToNonFinalStatic;
+import net.sourceforge.pmd.rules.design.CompareObjectsWithEquals;
+import net.sourceforge.pmd.rules.design.ConfusingTernary;
+import net.sourceforge.pmd.rules.design.ExceptionAsFlowControl;
+import net.sourceforge.pmd.rules.design.LongClassRule;
+import net.sourceforge.pmd.rules.design.LongMethodRule;
+import net.sourceforge.pmd.rules.design.LongParameterListRule;
+import net.sourceforge.pmd.rules.design.LooseCoupling;
+import net.sourceforge.pmd.rules.design.NonThreadSafeSingleton;
+import net.sourceforge.pmd.rules.design.NullAssignmentRule;
+import net.sourceforge.pmd.rules.design.OnlyOneReturnRule;
+import net.sourceforge.pmd.rules.design.PositionalIteratorRule;
+import net.sourceforge.pmd.rules.design.PreserveStackTrace;
+import net.sourceforge.pmd.rules.design.SingularField;
+import net.sourceforge.pmd.rules.design.SwitchDensityRule;
+import net.sourceforge.pmd.rules.design.TooManyFields;
+import net.sourceforge.pmd.rules.design.UnnecessaryLocalBeforeReturn;
+import net.sourceforge.pmd.rules.design.UnsynchronizedStaticDateFormatter;
+import net.sourceforge.pmd.rules.design.UseCollectionIsEmpty;
+import net.sourceforge.pmd.rules.design.UseSingleton;
+import net.sourceforge.pmd.rules.imports.DontImportJavaLang;
+import net.sourceforge.pmd.rules.imports.DontImportSun;
+import net.sourceforge.pmd.rules.imports.DuplicateImportsRule;
+import net.sourceforge.pmd.rules.imports.ImportFromSamePackageRule;
+import net.sourceforge.pmd.rules.imports.UnusedImportsRule;
+import net.sourceforge.pmd.rules.junit.JUnitAssertionsShouldIncludeMessage;
+import net.sourceforge.pmd.rules.junit.JUnitTestsShouldContainAsserts;
+import net.sourceforge.pmd.rules.junit.TestClassWithoutTestCases;
 import net.sourceforge.pmd.rules.migration.JUnitUseExpected;
-import net.sourceforge.pmd.rules.naming.*;
-import net.sourceforge.pmd.rules.optimization.*;
-import net.sourceforge.pmd.rules.strictexception.*;
-import net.sourceforge.pmd.rules.strings.*;
-import net.sourceforge.pmd.rules.sunsecure.*;
-import net.sourceforge.pmd.stat.Metric;
-
-import org.junit.runner.Result;
+import net.sourceforge.pmd.rules.naming.AvoidDollarSigns;
+import net.sourceforge.pmd.rules.naming.SuspiciousHashcodeMethodName;
+import net.sourceforge.pmd.rules.optimization.AbstractOptimizationRule;
+import net.sourceforge.pmd.rules.optimization.AvoidInstantiatingObjectsInLoops;
+import net.sourceforge.pmd.rules.optimization.LocalVariableCouldBeFinal;
+import net.sourceforge.pmd.rules.optimization.UnnecessaryWrapperObjectCreation;
+import net.sourceforge.pmd.rules.optimization.UseStringBufferForStringAppends;
+import net.sourceforge.pmd.rules.strictexception.AvoidCatchingThrowable;
+import net.sourceforge.pmd.rules.strictexception.ExceptionSignatureDeclaration;
+import net.sourceforge.pmd.rules.strings.AppendCharacterWithChar;
+import net.sourceforge.pmd.rules.strings.ConsecutiveLiteralAppends;
+import net.sourceforge.pmd.rules.strings.InefficientEmptyStringCheck;
+import net.sourceforge.pmd.rules.strings.InefficientStringBuffering;
+import net.sourceforge.pmd.rules.strings.InsufficientStringBufferDeclaration;
+import net.sourceforge.pmd.rules.strings.StringInstantiation;
+import net.sourceforge.pmd.rules.strings.StringToStringRule;
+import net.sourceforge.pmd.rules.strings.UnnecessaryCaseChange;
+import net.sourceforge.pmd.rules.strings.UseIndexOfChar;
+import net.sourceforge.pmd.rules.strings.UseStringBufferLength;
+import net.sourceforge.pmd.rules.strings.UselessStringValueOf;
+import net.sourceforge.pmd.rules.sunsecure.ArrayIsStoredDirectly;
+import net.sourceforge.pmd.rules.sunsecure.MethodReturnsInternalArray;
 
 
 public class SuiteRunner {
 
+	private static class Result{
+		long junit_total_tests;
+		long junit_failed_tests;
+		long junit_total_time;
+		long pmd_score;
+	}
+	
 	public static void main(String[] args) throws ParseException, FileNotFoundException, PMDException {
-		Result result = org.junit.runner.JUnitCore.runClasses(HotelConsoleTest.class);
-		System.out.println(result.getFailureCount());
-		System.out.println(result.getRunCount());
-		System.out.println(result.getRunTime());
-		
+		Result result = process();
+		generateOutput(result);
+	}
+
+	private static Result process() throws PMDException, FileNotFoundException {
+		Result result = new Result();
+		processTests(result);
+		processPMD(result);
+		return result;
+	}
+
+	private static void generateOutput(Result result) {
+		System.out.println("Tests\tFailed\tTime\tViolations");
+		StringBuffer sb = new StringBuffer();
+		sb.append(result.junit_total_tests);
+		sb.append('\t');
+		sb.append(result.junit_failed_tests);
+		sb.append('\t');
+		sb.append(result.junit_total_time);
+		sb.append('\t');
+		sb.append(result.pmd_score);
+		System.out.println(sb.toString());
+	}
+
+	private static void processPMD(Result result) throws PMDException, FileNotFoundException {
 		String file = "/media/Dados/coding/GildedRose/src/gildedrose/console/HotelConsole.java";
 		
 		PMD pmd = new PMD();
@@ -50,7 +151,16 @@ public class SuiteRunner {
 		long sum = 0;
 		for (Integer i : report.getCountSummary().values())	{	sum+= i;}
 		for (Integer i : report.getSummary().values())		{	sum+= i;}
-		System.out.println(sum);
+		
+		result.pmd_score = sum;
+	}
+
+	private static void processTests(Result result) {
+		org.junit.runner.Result r = org.junit.runner.JUnitCore.runClasses(HotelConsoleTest.class);
+		result.junit_failed_tests = r.getFailureCount();
+		result.junit_total_tests = r.getRunCount();
+		result.junit_total_time = r.getRunTime();
+		
 	}
 
 	private static RuleSets createRuleSet() {
