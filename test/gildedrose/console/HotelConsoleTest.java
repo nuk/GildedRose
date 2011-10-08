@@ -42,7 +42,7 @@ public class HotelConsoleTest {
 	@Test
 	public void shouldNeverAllowANegativeQuality(){
 		List<Item> items = new ArrayList<Item>();
-		Collections.addAll(items, new Item("Coke",1,0),new Item("Pepsi",0,0), new Item("Doctor Pepper",-2,0), new Item("Ginger Ale",2,-3));
+		Collections.addAll(items, new Item("Coke",1,0),new Item("Pepsi",0,0), new Item("Doctor Pepper",-2,0));
 		
 		HotelConsole console = new HotelConsole(items);
 		console.UpdateQuality();
@@ -50,14 +50,13 @@ public class HotelConsoleTest {
 		assertEquals(0, items.get(0).Quality);
 		assertEquals(0, items.get(1).Quality);
 		assertEquals(0, items.get(2).Quality);
-		//assertEquals(0, items.get(3).Quality); TODO: Fails cuz do not check for invalid informed data
 	}
 	
 	@Test
 	public void shouldIncreaseAgedBrieQualityAOverTime(){
 		List<Item> items = new ArrayList<Item>();
 		Collections.addAll(items, new Item("Aged Brie",1,0),new Item("Aged Brie",10,10), 
-				new Item("Aged Brie",0,5), new Item("Aged Brie",-2,-3));
+				new Item("Aged Brie",0,5));
 		
 		HotelConsole console = new HotelConsole(items);
 		console.UpdateQuality();
@@ -65,27 +64,25 @@ public class HotelConsoleTest {
 		assertEquals(1, items.get(0).Quality);
 		assertEquals(11, items.get(1).Quality);
 		assertEquals(7, items.get(2).Quality);
-		//assertEquals(0, items.get(3).Quality); TODO: Fails cuz do not check for invalid informed data 
 	}
 	
 	@Test
 	public void shouldNotAllowAQualityOver50(){
 		List<Item> items = new ArrayList<Item>();
-		Collections.addAll(items, new Item("Coke",1,55),new Item("Aged Brie",10,50),new Item("Aged Brie",0,49));
+		Collections.addAll(items, new Item("Aged Brie",10,50),new Item("Aged Brie",0,49));
 		
 		HotelConsole console = new HotelConsole(items);
 		console.UpdateQuality();
 		
-		//assertEquals(50, items.get(0).Quality);TODO: Fails cuz do not check for invalid informed data
+		assertEquals(50, items.get(0).Quality);
 		assertEquals(50, items.get(1).Quality);
-		assertEquals(50, items.get(2).Quality);
 	}
 	
 	@Test
 	public void shouldNotDecrementSulfurasQualityAndSellIn(){
 		List<Item> items = new ArrayList<Item>();
 		Collections.addAll(items, new Item("Sulfuras, Hand of Ragnaros",10,80),new Item("Sulfuras, Hand of Ragnaros",0,80),
-				new Item("Sulfuras, Hand of Ragnaros",-1,80), new Item("Sulfuras, Hand of Ragnaros",10,49));
+				new Item("Sulfuras, Hand of Ragnaros",-1,80));
 		
 		HotelConsole console = new HotelConsole(items);
 		console.UpdateQuality();
@@ -96,7 +93,6 @@ public class HotelConsoleTest {
 		assertEquals(80, items.get(1).Quality);
 		assertEquals(-1, items.get(2).SellIn);
 		assertEquals(80, items.get(2).Quality);
-		//assertEquals(80, items.get(3).Quality);TODO: Fails cuz do not check for invalid informed data
 	}
 	
 	@Test
@@ -140,7 +136,6 @@ public class HotelConsoleTest {
 		assertEquals(8, items.get(2).Quality);
 	}
 	
-	//but Quality drops to 0 after the concert
 	@Test
 	public void shouldSetBackstagePassesQualityToZeroAfterSellDate(){
 		List<Item> items = new ArrayList<Item>();
@@ -156,5 +151,20 @@ public class HotelConsoleTest {
 		assertEquals(0, items.get(1).Quality);
 		assertEquals(0, items.get(2).Quality);
 		assertEquals(0, items.get(3).Quality);
+	}
+	
+	@Test
+	public void shouldNotAllowInconsisntenciesInDataPropagate(){
+		List<Item> items = new ArrayList<Item>();
+		Collections.addAll(items, new Item("Ginger Ale",2,-3),new Item("Aged Brie",-2,-3),
+				new Item("Coke",1,55), new Item("Sulfuras, Hand of Ragnaros",10,49));
+		
+		HotelConsole console = new HotelConsole(items);
+		console.UpdateQuality();
+		
+		assertEquals(0, items.get(0).Quality); // Quality should never be negative
+		assertEquals(0, items.get(1).Quality); // Quality should never be negative
+		assertEquals(50, items.get(2).Quality); // Quality should never be more than 50
+		assertEquals(80, items.get(3).Quality); // Sulfuras always have quality 80s
 	}
 }
