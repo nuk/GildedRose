@@ -1,7 +1,11 @@
+import gildedrose.console.HotelConsole;
+import gildedrose.console.HotelConsoleFactory;
 import gildedrose.console.HotelConsoleTest;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import net.sourceforge.pmd.PMD;
 import net.sourceforge.pmd.PMDException;
@@ -107,6 +111,7 @@ import net.sourceforge.pmd.rules.sunsecure.MethodReturnsInternalArray;
 public class SuiteRunner {
 
 	private static class Result{
+		String test_name;
 		long junit_total_tests;
 		long junit_failed_tests;
 		long junit_total_time;
@@ -114,8 +119,15 @@ public class SuiteRunner {
 	}
 	
 	public static void main(String[] args) throws ParseException, FileNotFoundException, PMDException {
-		Result result = process();
-		generateOutput(result);
+		Class[] hotelClasses = new Class[]{HotelConsole.class, EmptyHotelConsole.class};
+		List<Result> results = new ArrayList<Result>();
+		for (Class c : hotelClasses){
+			HotelConsoleFactory.setHotelConsoleClass(c);
+			Result result = process();
+			result.test_name = c.getName();
+			results.add(result);
+		}
+		generateOutput(results);
 	}
 
 	private static Result process() throws PMDException, FileNotFoundException {
@@ -125,17 +137,21 @@ public class SuiteRunner {
 		return result;
 	}
 
-	private static void generateOutput(Result result) {
-		System.out.println("Tests\tFailed\tTime\tViolations");
-		StringBuffer sb = new StringBuffer();
-		sb.append(result.junit_total_tests);
-		sb.append('\t');
-		sb.append(result.junit_failed_tests);
-		sb.append('\t');
-		sb.append(result.junit_total_time);
-		sb.append('\t');
-		sb.append(result.pmd_score);
-		System.out.println(sb.toString());
+	private static void generateOutput(List<Result> results) {
+		System.out.println("Name\tTests\tFailed\tTime\tViolations");
+		for (Result result : results){
+			StringBuffer sb = new StringBuffer();
+			sb.append(result.test_name);
+			sb.append('\t');
+			sb.append(result.junit_total_tests);
+			sb.append('\t');
+			sb.append(result.junit_failed_tests);
+			sb.append('\t');
+			sb.append(result.junit_total_time);
+			sb.append('\t');
+			sb.append(result.pmd_score);
+			System.out.println(sb.toString());
+		}
 	}
 
 	private static void processPMD(Result result) throws PMDException, FileNotFoundException {

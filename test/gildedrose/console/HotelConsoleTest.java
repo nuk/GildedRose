@@ -158,7 +158,7 @@ public class HotelConsoleTest {
 	}
 
 	private void runUpdate(List<Item> items) {
-		HotelConsole console = new HotelConsole(items);
+		HotelConsole console = HotelConsoleFactory.createConsole(items);
 		console.UpdateQuality();
 	}
 }
