@@ -84,18 +84,19 @@ public class HotelConsoleTest {
 	@Test
 	public void shouldNotDecrementSulfurasQualityAndSellIn(){
 		List<Item> items = new ArrayList<Item>();
-		Collections.addAll(items, new Item("Sulfuras, Hand of Ragnaros",10,10),new Item("Sulfuras, Hand of Ragnaros",0,5),
-				new Item("Sulfuras, Hand of Ragnaros",-1,49));
+		Collections.addAll(items, new Item("Sulfuras, Hand of Ragnaros",10,80),new Item("Sulfuras, Hand of Ragnaros",0,80),
+				new Item("Sulfuras, Hand of Ragnaros",-1,80), new Item("Sulfuras, Hand of Ragnaros",10,49));
 		
 		HotelConsole console = new HotelConsole(items);
 		console.UpdateQuality();
 		
 		assertEquals(10, items.get(0).SellIn);
-		assertEquals(10, items.get(0).Quality);
+		assertEquals(80, items.get(0).Quality);
 		assertEquals(0, items.get(1).SellIn);
-		assertEquals(5, items.get(1).Quality);
+		assertEquals(80, items.get(1).Quality);
 		assertEquals(-1, items.get(2).SellIn);
-		assertEquals(49, items.get(2).Quality);
+		assertEquals(80, items.get(2).Quality);
+		//assertEquals(80, items.get(3).Quality);TODO: Fails cuz do not check for invalid informed data
 	}
 	
 	@Test
