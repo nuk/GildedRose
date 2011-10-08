@@ -10,8 +10,6 @@ public class HotelConsole {
 		this.Items = Items;
 	}
 
-	public List<Item> Items(){return Items;}
-	
     public void UpdateQuality()
     {
         for (int i = 0; i < Items.size(); i++)
