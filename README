@@ -25,6 +25,12 @@ Just for clarification, an item can never have its Quality increase above 50, ho
 
 Refactor the code as you like, until you reach the desired quality needed.
 
+But:
+	- The Item class must not be changed.
+	- The HotelConsole class must maitain its interface (with the UpdateQuality() method as responsible for doing the job).
+
+You can be classified in the formal ranks sending me your code through a PullRequest.
+
 #######################################################################################
 #                           Bonus Task                                                #
 #######################################################################################
