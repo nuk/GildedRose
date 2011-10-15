@@ -4,30 +4,30 @@ import java.util.List;
 
 public class HotelConsole {
 
-	private List<Item> Items;
+	private List<Item> items;
 
 	public HotelConsole(List<Item> Items) {
-		this.Items = Items;
+		this.items = Items;
 	}
 
 	public void UpdateQuality() {
-		for (int i = 0; i < Items.size(); i++) {
+		for (int i = 0; i < items.size(); i++) {
 
-			if (Items.get(i).Name == "Sulfuras, Hand of Ragnaros") {
-				Items.get(i).Quality = 80;
+			if (items.get(i).Name.equals("Sulfuras, Hand of Ragnaros")) {
+				items.get(i).Quality = 80;
 
 			} else {
 				
-				Items.get(i).SellIn = Items.get(i).SellIn - 1;
+				items.get(i).SellIn = items.get(i).SellIn - 1;
 				
-				if (Items.get(i).Name == "Aged Brie") {
-					updateBrie(Items.get(i));
+				if (items.get(i).Name.equals("Aged Brie")) {
+					updateBrie(items.get(i));
 
-				} else if (Items.get(i).Name == "Backstage passes to a TAFKAL80ETC concert") {
-					updatePasse(Items.get(i));
+				} else if (items.get(i).Name.equals("Backstage passes to a TAFKAL80ETC concert")) {
+					updatePasse(items.get(i));
 
 				} else { // todo resto
-					updateItem(Items.get(i));
+					updateItem(items.get(i));
 				}
 			}
 
@@ -41,10 +41,8 @@ public class HotelConsole {
 			item.Quality = 0;
 		}
 		
-		if (item.SellIn < 0){
-			if (item.Quality > 0) {
-				item.Quality--;
-			}
+		if (item.SellIn < 0 && item.Quality > 0) {
+			item.Quality--;
 		}
 		
 		if (item.Quality >= 50) {
@@ -61,12 +59,14 @@ public class HotelConsole {
 				item.Quality++;
 			
 		}
-		if (item.Quality<0)
+		if (item.Quality < 0) {
 			item.Quality = 0;
+		}
 	}
 
 	private void updatePasse(Item item) {
 		if (item.Quality < 50) {
+			
 			item.Quality++;
 
 			if (item.SellIn < 10) {
