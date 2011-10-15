@@ -12,78 +12,98 @@ public class HotelConsole {
 
     public void UpdateQuality()
     {
-        for (int i = 0; i < Items.size(); i++)
+    	for( Item item : Items )
         {
-            if (Items.get(i).Name != "Aged Brie" && Items.get(i).Name != "Backstage passes to a TAFKAL80ETC concert")
+            if (item.Name != "Aged Brie" && item.Name != "Backstage passes to a TAFKAL80ETC concert")
             {
-                if (Items.get(i).Quality > 0)
+                if (item.Quality > 0)
                 {
-                    if (Items.get(i).Name != "Sulfuras, Hand of Ragnaros")
+                    if (item.Name != "Sulfuras, Hand of Ragnaros")
                     {
-                        Items.get(i).Quality = Items.get(i).Quality - 1;
+                        decrementItemQuality( item );
                     }
                 }
             }
             else
             {
-                if (Items.get(i).Quality < 50)
+                if (item.Quality < 50)
                 {
-                    Items.get(i).Quality = Items.get(i).Quality + 1;
+                    incrementItemQuality( item );
 
-                    if (Items.get(i).Name == "Backstage passes to a TAFKAL80ETC concert")
-                    {
-                        if (Items.get(i).SellIn < 11)
-                        {
-                            if (Items.get(i).Quality < 50)
-                            {
-                                Items.get(i).Quality = Items.get(i).Quality + 1;
-                            }
-                        }
-
-                        if (Items.get(i).SellIn < 6)
-                        {
-                            if (Items.get(i).Quality < 50)
-                            {
-                                Items.get(i).Quality = Items.get(i).Quality + 1;
-                            }
-                        }
-                    }
+                    updateBackStagePassesQuality( item );
                 }
             }
 
-            if (Items.get(i).Name != "Sulfuras, Hand of Ragnaros")
-            {
-                Items.get(i).SellIn = Items.get(i).SellIn - 1;
-            }
+            updateItemSellIn( item );
 
-            if (Items.get(i).SellIn < 0)
+            if (item.SellIn < 0)
             {
-                if (Items.get(i).Name != "Aged Brie")
+                if (item.Name != "Aged Brie")
                 {
-                    if (Items.get(i).Name != "Backstage passes to a TAFKAL80ETC concert")
+                    if (item.Name != "Backstage passes to a TAFKAL80ETC concert")
                     {
-                        if (Items.get(i).Quality > 0)
+                        if (item.Quality > 0)
                         {
-                            if (Items.get(i).Name != "Sulfuras, Hand of Ragnaros")
+                            if (item.Name != "Sulfuras, Hand of Ragnaros")
                             {
-                                Items.get(i).Quality = Items.get(i).Quality - 1;
+                                decrementItemQuality( item );
                             }
                         }
                     }
                     else
                     {
-                        Items.get(i).Quality = Items.get(i).Quality - Items.get(i).Quality;
+                        item.Quality = item.Quality - item.Quality;
                     }
                 }
                 else
                 {
-                    if (Items.get(i).Quality < 50)
+                    if (item.Quality < 50)
                     {
-                        Items.get(i).Quality = Items.get(i).Quality + 1;
+                        incrementItemQuality( item );
                     }
                 }
             }
         }
     }
+
+	private void updateBackStagePassesQuality( Item item )
+	{
+		if (item.Name == "Backstage passes to a TAFKAL80ETC concert")
+		{
+		    if (item.SellIn < 11)
+		    {
+		        if (item.Quality < 50)
+		        {
+		            incrementItemQuality( item );
+		        }
+		    }
+
+		    if (item.SellIn < 6)
+		    {
+		        if (item.Quality < 50)
+		        {
+		            incrementItemQuality( item );
+		        }
+		    }
+		}
+	}
+
+	private void incrementItemQuality( Item item )
+	{
+		item.Quality = item.Quality + 1;
+	}
+
+	private void updateItemSellIn( Item item )
+	{
+		if (item.Name != "Sulfuras, Hand of Ragnaros")
+		{
+		    item.SellIn --;
+		}
+	}
+
+	private void decrementItemQuality( Item item )
+	{
+		item.Quality --;
+	}
 }
 
