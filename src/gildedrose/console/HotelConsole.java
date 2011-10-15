@@ -14,6 +14,7 @@ public class HotelConsole {
 		for (int i = 0; i < Items.size(); i++) {
 
 			if (Items.get(i).Name == "Sulfuras, Hand of Ragnaros") {
+				Items.get(i).Quality = 80;
 
 			} else {
 				
@@ -34,14 +35,20 @@ public class HotelConsole {
 	}
 
 	private void updateItem(Item item) {
-		item.SellIn--;
 		if (item.Quality > 0) {
 			item.Quality--;
+		}else {
+			item.Quality = 0;
 		}
+		
 		if (item.SellIn < 0){
 			if (item.Quality > 0) {
 				item.Quality--;
 			}
+		}
+		
+		if (item.Quality >= 50) {
+			item.Quality = 50;
 		}
 
 	}
@@ -54,6 +61,8 @@ public class HotelConsole {
 				item.Quality++;
 			
 		}
+		if (item.Quality<0)
+			item.Quality = 0;
 	}
 
 	private void updatePasse(Item item) {
