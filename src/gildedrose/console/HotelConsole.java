@@ -92,15 +92,12 @@ public class HotelConsole
 
 	private void incrementItemQuality( Item item )
 	{
-		item.Quality = item.Quality + 1;
+		item.Quality++;
 	}
 
 	private void updateItemSellIn( Item item )
 	{
-		if ( !item.Name.equals("Sulfuras, Hand of Ragnaros") )
-		{
-			item.SellIn--;
-		}
+		item.SellIn--;
 	}
 
 	private void decrementItemQuality( Item item )
