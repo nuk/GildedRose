@@ -4,10 +4,10 @@ import java.util.List;
 
 public class HotelConsole {
 
-	private List<Item> Items;
+	private List<Item> items;
 	
 	public HotelConsole(List<Item> Items) {
-		this.Items = Items;
+		this.items = Items;
 	}
 	
 	public void fixQuality(Item item){
@@ -77,9 +77,9 @@ public class HotelConsole {
 
     public void UpdateQuality()
     {
-        for (int i = 0; i < Items.size(); i++)
+        for (int i = 0; i < items.size(); i++)
         {
-        	Item item = Items.get(i);
+        	Item item = items.get(i);
         	if (!isLegendaryItem(item)){
         		if (isAgedItem(item)){
         			updateAgedItemQuality(item);
