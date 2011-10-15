@@ -10,6 +10,25 @@ public class HotelConsole {
 		this.items = Items;
 	}
 	
+	public void UpdateQuality()
+	{
+		for (int i = 0; i < items.size(); i++)
+		{
+			Item item = items.get(i);
+			if (!isLegendaryItem(item)){
+				if (isAgedItem(item)){
+					updateAgedItemQuality(item);
+				}else if (isEventTicket(item)){
+					updateEventTicketQuality(item);
+				}else{
+					updateItemQuality(item);
+				}
+				updateItemSellIn(item);
+			}
+			fixQuality(item); 
+		}
+	}
+	
 	public void fixQuality(Item item){
 			if(item.Quality < 0){
 				item.Quality = 0;
@@ -75,24 +94,6 @@ public class HotelConsole {
 		return false;
 	}
 
-    public void UpdateQuality()
-    {
-        for (int i = 0; i < items.size(); i++)
-        {
-        	Item item = items.get(i);
-        	if (!isLegendaryItem(item)){
-        		if (isAgedItem(item)){
-        			updateAgedItemQuality(item);
-        		}else if (isEventTicket(item)){
-        			updateEventTicketQuality(item);
-        		}else{
-        			updateItemQuality(item);
-        		}
-        		updateItemSellIn(item);
-        	}
-        	fixQuality(item); 
-        }
-    }
 
 	
 }
