@@ -4,86 +4,85 @@ import java.util.List;
 
 public class HotelConsole {
 
-	private List<Item> Items;
-	
+	private List<Item> items;
+
 	public HotelConsole(List<Item> Items) {
-		this.Items = Items;
+		this.items = Items;
 	}
 
-    public void UpdateQuality()
-    {
-        for (int i = 0; i < Items.size(); i++)
-        {
-            if (Items.get(i).Name != "Aged Brie" && Items.get(i).Name != "Backstage passes to a TAFKAL80ETC concert")
-            {
-                if (Items.get(i).Quality > 0)
-                {
-                    if (Items.get(i).Name != "Sulfuras, Hand of Ragnaros")
-                    {
-                        Items.get(i).Quality = Items.get(i).Quality - 1;
-                    }
-                }
-            }
-            else
-            {
-                if (Items.get(i).Quality < 50)
-                {
-                    Items.get(i).Quality = Items.get(i).Quality + 1;
+	public void UpdateQuality() {
+		for (int i = 0; i < items.size(); i++) {
 
-                    if (Items.get(i).Name == "Backstage passes to a TAFKAL80ETC concert")
-                    {
-                        if (Items.get(i).SellIn < 11)
-                        {
-                            if (Items.get(i).Quality < 50)
-                            {
-                                Items.get(i).Quality = Items.get(i).Quality + 1;
-                            }
-                        }
+			if (items.get(i).Name.equals("Sulfuras, Hand of Ragnaros")) {
+				items.get(i).Quality = 80;
 
-                        if (Items.get(i).SellIn < 6)
-                        {
-                            if (Items.get(i).Quality < 50)
-                            {
-                                Items.get(i).Quality = Items.get(i).Quality + 1;
-                            }
-                        }
-                    }
-                }
-            }
+			} else {
+				
+				items.get(i).SellIn = items.get(i).SellIn - 1;
+				
+				if (items.get(i).Name.equals("Aged Brie")) {
+					updateBrie(items.get(i));
 
-            if (Items.get(i).Name != "Sulfuras, Hand of Ragnaros")
-            {
-                Items.get(i).SellIn = Items.get(i).SellIn - 1;
-            }
+				} else if (items.get(i).Name.equals("Backstage passes to a TAFKAL80ETC concert")) {
+					updatePasse(items.get(i));
 
-            if (Items.get(i).SellIn < 0)
-            {
-                if (Items.get(i).Name != "Aged Brie")
-                {
-                    if (Items.get(i).Name != "Backstage passes to a TAFKAL80ETC concert")
-                    {
-                        if (Items.get(i).Quality > 0)
-                        {
-                            if (Items.get(i).Name != "Sulfuras, Hand of Ragnaros")
-                            {
-                                Items.get(i).Quality = Items.get(i).Quality - 1;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        Items.get(i).Quality = Items.get(i).Quality - Items.get(i).Quality;
-                    }
-                }
-                else
-                {
-                    if (Items.get(i).Quality < 50)
-                    {
-                        Items.get(i).Quality = Items.get(i).Quality + 1;
-                    }
-                }
-            }
-        }
-    }
+				} else { // todo resto
+					updateItem(items.get(i));
+				}
+			}
+
+		}// for
+	}
+
+	private void updateItem(Item item) {
+		if (item.Quality > 0) {
+			item.Quality--;
+		}else {
+			item.Quality = 0;
+		}
+		
+		if (item.SellIn < 0 && item.Quality > 0) {
+			item.Quality--;
+		}
+		
+		if (item.Quality >= 50) {
+			item.Quality = 50;
+		}
+
+	}
+
+	private void updateBrie(Item item) {
+		if (item.Quality < 50) {
+			item.Quality++;
+		}
+		if (item.SellIn < 0 && item.Quality < 50) {
+				item.Quality++;
+			
+		}
+		if (item.Quality < 0) {
+			item.Quality = 0;
+		}
+	}
+
+	private void updatePasse(Item item) {
+		if (item.Quality < 50) {
+			
+			item.Quality++;
+
+			if (item.SellIn < 10) {
+				if (item.Quality < 50) {
+					item.Quality++;
+				}
+			}
+
+			if (item.SellIn < 5) {
+				if (item.Quality < 50) {
+					item.Quality = item.Quality + 1;
+				}
+			}
+		}
+		if (item.SellIn < 0) {
+			item.Quality = 0;
+		}
+	}
 }
-
