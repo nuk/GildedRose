@@ -1,89 +1,107 @@
+
 package gildedrose.console;
 
 import java.util.List;
 
-public class HotelConsole {
+public class HotelConsole
+{
 
-	private List<Item> Items;
-	
-	public HotelConsole(List<Item> Items) {
+	private List<Item>	Items;
+
+	public HotelConsole( List<Item> Items )
+	{
 		this.Items = Items;
 	}
 
-    public void UpdateQuality()
-    {
-        for (int i = 0; i < Items.size(); i++)
-        {
-            if (Items.get(i).Name != "Aged Brie" && Items.get(i).Name != "Backstage passes to a TAFKAL80ETC concert")
-            {
-                if (Items.get(i).Quality > 0)
-                {
-                    if (Items.get(i).Name != "Sulfuras, Hand of Ragnaros")
-                    {
-                        Items.get(i).Quality = Items.get(i).Quality - 1;
-                    }
-                }
-            }
-            else
-            {
-                if (Items.get(i).Quality < 50)
-                {
-                    Items.get(i).Quality = Items.get(i).Quality + 1;
+	public void UpdateQuality( )
+	{
+		for ( Item item : Items )
+		{
 
-                    if (Items.get(i).Name == "Backstage passes to a TAFKAL80ETC concert")
-                    {
-                        if (Items.get(i).SellIn < 11)
-                        {
-                            if (Items.get(i).Quality < 50)
-                            {
-                                Items.get(i).Quality = Items.get(i).Quality + 1;
-                            }
-                        }
+			if ( item.Name.equals( "Sulfuras, Hand of Ragnaros" ) )
+				continue;
 
-                        if (Items.get(i).SellIn < 6)
-                        {
-                            if (Items.get(i).Quality < 50)
-                            {
-                                Items.get(i).Quality = Items.get(i).Quality + 1;
-                            }
-                        }
-                    }
-                }
-            }
+			if ( !item.Name.equals("Aged Brie") && !item.Name.equals("Backstage passes to a TAFKAL80ETC concert") )
+			{
+				if ( item.Quality > 0 )
+				{
+					decrementItemQuality( item );
+				}
+			}
+			else
+			{
+				if ( item.Quality < 50 )
+				{
+					incrementItemQuality( item );
 
-            if (Items.get(i).Name != "Sulfuras, Hand of Ragnaros")
-            {
-                Items.get(i).SellIn = Items.get(i).SellIn - 1;
-            }
+					updateBackStagePassesQuality( item );
+				}
+			}
 
-            if (Items.get(i).SellIn < 0)
-            {
-                if (Items.get(i).Name != "Aged Brie")
-                {
-                    if (Items.get(i).Name != "Backstage passes to a TAFKAL80ETC concert")
-                    {
-                        if (Items.get(i).Quality > 0)
-                        {
-                            if (Items.get(i).Name != "Sulfuras, Hand of Ragnaros")
-                            {
-                                Items.get(i).Quality = Items.get(i).Quality - 1;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        Items.get(i).Quality = Items.get(i).Quality - Items.get(i).Quality;
-                    }
-                }
-                else
-                {
-                    if (Items.get(i).Quality < 50)
-                    {
-                        Items.get(i).Quality = Items.get(i).Quality + 1;
-                    }
-                }
-            }
-        }
-    }
+			updateItemSellIn( item );
+
+			if ( item.SellIn < 0 )
+			{
+				if ( item.Name.equals("Backstage passes to a TAFKAL80incrementItemQualityETC concert" ))
+				{
+					item.Quality = 0;
+					continue;
+				} 
+			
+				if ( !item.Name.equals("Aged Brie") )
+				{
+					
+					if ( item.Quality > 0 )
+					{
+						decrementItemQuality( item );
+					}
+					
+				}
+				else
+				{
+					if ( item.Quality < 50 )
+					{
+						incrementItemQuality( item );
+					}
+				}
+			}
+		}
+	}
+
+	private void updateBackStagePassesQuality( Item item )
+	{
+		if ( item.Name.equals("Backstage passes to a TAFKAL80ETC concert") )
+		{
+			if ( item.SellIn < 11 )
+			{
+				if ( item.Quality < 50 )
+				{
+					incrementItemQuality( item );
+				}
+			}
+
+			if ( item.SellIn < 6 )
+			{
+				if ( item.Quality < 50 )
+				{
+					incrementItemQuality( item );
+				}
+			}
+		}
+	}
+
+	private void incrementItemQuality( Item item )
+	{
+		item.Quality++;
+	}
+
+	private void updateItemSellIn( Item item )
+	{
+		item.SellIn--;
+	}
+
+	private void decrementItemQuality( Item item )
+	{
+		item.Quality--;
+	}
 }
-
